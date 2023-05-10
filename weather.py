@@ -1,11 +1,15 @@
 from config import api_key
 import requests
 
+
 def get_weather(location):
     url = f"http://api.weatherapi.com/v1/current.json?key={api_key}&q={location}"
 
     response = requests.get(url)
     print(response.json())
+
+    if 'error' in response.json():
+        return 'error'
 
     # temperature_c = response.json()['current']['temp_c']  # Temperature in Celsius
     temperature_f = response.json()['current']['temp_f']  # Temperature in Fahrenheit
