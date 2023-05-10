@@ -9,7 +9,7 @@ def index():  # put application's code here
     if request.method == 'POST':
         location = request.form['location']
         temperature = get_weather(location)
-        if 'error' in temperature:
+        if temperature == "error":
             return render_template('error.html')
         return render_template('result.html', location=location, temperature=temperature)
     else:
