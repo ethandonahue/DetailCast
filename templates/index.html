@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Address Autocomplete Example</title>
+    <title>Detail Cast</title>
     <script>
         async function addressAuto() {
-            var inputText = document.getElementById("address-input").value;
+            var inputText = document.getElementById("location").value;
             var url = "https://api.geoapify.com/v1/geocode/autocomplete?text=" + inputText + "&apiKey=" + apiKey;
             const response = await fetch(url);
             const jsonData = await response.json();
@@ -13,15 +13,22 @@
             for (var i = 0; i < jsonData.features.length; i++) {
                 var option = document.createElement("li");
                 option.textContent = jsonData.features[i].properties.formatted;
+                option.addEventListener("click", function () {
+                    document.getElementById("location").value = this.textContent;
+                    suggestionList.innerHTML = "";
+                });
                 suggestionList.appendChild(option);
             }
         }
     </script>
-    <script src="config.js"></script>
+    <script src="{{ url_for('static', filename='config.js') }}"></script>
 </head>
 <body>
-<label for="address-input">Enter address:</label>
-<input type="text" id="address-input" name="address" oninput="addressAuto()">
+<form method="POST">
+    <label for="location">Enter location:</label>
+    <input type="text" id="location" name="location" oninput="addressAuto()">
+    <button type="submit">Get Weather</button>
+</form>
 <ul id="results">
 </ul>
 </body>

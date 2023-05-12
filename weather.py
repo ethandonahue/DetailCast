@@ -1,4 +1,4 @@
-from config import api_key
+from static.config import api_key
 import requests
 
 
