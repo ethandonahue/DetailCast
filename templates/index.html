@@ -8,8 +8,12 @@
             var url = "https://api.geoapify.com/v1/geocode/autocomplete?text=" + inputText + "&apiKey=" + apiKey;
             const response = await fetch(url);
             const jsonData = await response.json();
+            var suggestionList = document.getElementById("results");
+            suggestionList.innerHTML = "";
             for (var i = 0; i < jsonData.features.length; i++) {
-                console.log(jsonData.features[i].properties.formatted);
+                var option = document.createElement("li");
+                option.textContent = jsonData.features[i].properties.formatted;
+                suggestionList.appendChild(option);
             }
         }
     </script>
@@ -18,6 +22,7 @@
 <body>
 <label for="address-input">Enter address:</label>
 <input type="text" id="address-input" name="address" oninput="addressAuto()">
-<datalist id="suggestion-list"></datalist>
+<ul id="results">
+</ul>
 </body>
 </html>
