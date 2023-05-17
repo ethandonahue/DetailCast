@@ -2,6 +2,7 @@
 <html>
 <head>
     <title>Detail Cast</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <script>
         async function addressAuto() {
             var inputText = document.getElementById("location").value;
@@ -24,12 +25,16 @@
     <script src="{{ url_for('static', filename='config.js') }}"></script>
 </head>
 <body>
-<form method="POST">
-    <label for="location">Enter location:</label>
-    <input type="text" id="location" name="location" oninput="addressAuto()">
-    <button type="submit">Get Weather</button>
-</form>
+<div class="container">
+    <h1>Detail Cast</h1>
+    <form method="POST">
+      <label for="location">Enter a location:</label>
+      <input type="text" id="location" name="location" oninput="addressAuto()" placeholder="e.g., New York, London, etc." required>
+      <input type="submit" value="Submit">
+    </form>
+  </div>
 <ul id="results">
 </ul>
 </body>
 </html>
+
