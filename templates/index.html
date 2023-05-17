@@ -12,11 +12,14 @@
             var suggestionList = document.getElementById("results");
             suggestionList.innerHTML = "";
             for (var i = 0; i < jsonData.features.length; i++) {
+                document.getElementById("results").style.display = "block";
                 var option = document.createElement("li");
                 option.textContent = jsonData.features[i].properties.formatted;
                 option.addEventListener("click", function () {
                     document.getElementById("location").value = this.textContent;
                     suggestionList.innerHTML = "";
+                    document.getElementById("results").style.display = "none";
+
                 });
                 suggestionList.appendChild(option);
             }
@@ -28,13 +31,15 @@
 <div class="container">
     <h1>Detail Cast</h1>
     <form method="POST">
-      <label for="location">Enter a location:</label>
-      <input type="text" id="location" name="location" oninput="addressAuto()" placeholder="e.g., New York, London, etc." required>
-      <input type="submit" value="Submit">
+        <label for="location">Enter a location:</label>
+        <div class="dropdown">
+            <input type="text" id="location" name="location" oninput="addressAuto()"
+                   placeholder="e.g., New York, London, etc." required>
+            <ul id="results"></ul>
+        </div>
+        <input type="submit" value="Submit">
     </form>
-  </div>
-<ul id="results">
-</ul>
+</div>
 </body>
 </html>
 
