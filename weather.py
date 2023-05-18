@@ -17,6 +17,7 @@ def get_weather(location):
     wind = response.json()['current']['wind_mph']
     precip = response.json()['current']['precip_mm']
     uv = response.json()['current']['uv']
+    day = response.json()['current']['is_day']
     # time = response.json()['current']['localtime']
     # time_part = time.split()[1]
 
@@ -70,59 +71,29 @@ def get_weather(location):
     else:
         windScore = 0
 
-    # if temp < 50 or temp > 80:
-    #     pass
-    # elif (50 <= temp <= 59) or (70 <= temp <= 80):
-    #     score += 1
-    # else:
-    #     score += 2
-    #
-    # # Cloud coverage
-    # if clouds < 20:
-    #     pass
-    # elif clouds <= 50:
-    #     score += 1
-    # else:
-    #     score += 2
-    #
-    # # Precipitation
-    # if precip > 2.5:
-    #     pass
-    # elif precip >= 0.1:
-    #     score += 1
-    # else:
-    #     score += 2
-    #
-    # # Wind
-    # if wind > 20:
-    #     pass
-    # elif wind >= 10:
-    #     score += 1
-    # else:
-    #     score += 2
-    #
-    # if score == 8:
-    #     grade = "A+"
-    # elif score == 7:
-    #     grade = "A"
-    # elif score == 6:
-    #     grade = "A-"
-    # elif score == 5:
-    #     grade = "B+"
-    # elif score == 4:
-    #     grade = "B"
-    # elif score == 3:
-    #     grade = "C"
-    # elif score == 2:
-    #     grade = "D"
-    # else:
-    #     grade = "F"
 
     print(tempScore, windScore, cloudScore)
     print((tempScore + windScore + cloudScore)/3)
+    combinedScore = (tempScore + windScore + cloudScore) / 3
+
+    if precip >= 10 or day == 0:
+        combinedScore = 0
+
+
+
+    if combinedScore >= 90.0:
+        washingRecommendation = "excellent conditions for car washing."
+    elif combinedScore >= 70.0:
+        washingRecommendation = "good conditions for car washing."
+    elif combinedScore >= 50.0:
+        washingRecommendation = "fair conditions for car washing."
+    else:
+        washingRecommendation = "not ideal conditions for car washing."
+
+    print(washingRecommendation)
     # print(grade)
 
-    return temp
+    return washingRecommendation
 
     # Print the temperature in Celsius and Fahrenheit
     # print(f'Temperature in {location}: {temperature_c}°C ({temperature_f}°F)')
