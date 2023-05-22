@@ -8,10 +8,10 @@ app = Flask(__name__)
 def index():  # put application's code here
     if request.method == 'POST':
         location = request.form['location']
-        temperature = get_weather(location)
-        if temperature == "error":
+        forecast = get_weather(location)
+        if forecast == "error":
             return render_template('error.html')
-        return render_template('result.html', location=location, temperature=temperature)
+        return render_template('weather.html', forecast=forecast)
     else:
         return render_template('index.html')
 
