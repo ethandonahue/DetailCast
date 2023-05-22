@@ -13,11 +13,14 @@ def get_weather(location):
         return 'error'
 
     recommendations = []
+    current_recommendation = None
+    start_time = None
 
     for forecast in forecast_data['forecast']['forecastday']:
         date = forecast['date']
         formatted_date = datetime.datetime.strptime(date, "%Y-%m-%d").strftime("%A %m/%d")
         daily_recommendations = []
+
         for hour in forecast['hour']:
             time = datetime.datetime.strptime(hour['time'], "%Y-%m-%d %H:%M")
             time = time.strftime("%I:%M %p").lstrip("0")  # Remove leading zero using lstrip()
@@ -33,15 +36,26 @@ def get_weather(location):
             windScore = calculate_wind_score(wind)
             combinedScore = calculate_combined_score(tempScore, cloudScore, windScore, precip, day)
 
-            print(date, time, tempScore, cloudScore, windScore)
-
             washingRecommendation = get_washing_recommendation(combinedScore)
 
-            if washingRecommendation != "":
-                daily_recommendations.append({
-                    'time': time,
-                    'washing_recommendation': washingRecommendation,
-                })
+            if washingRecommendation != -1:
+                if washingRecommendation != current_recommendation:
+                    # If the condition has changed end the recommendation block
+                    if current_recommendation is not None:
+                        end_time = datetime.datetime.strptime(time, "%I:%M %p")
+                        daily_recommendations.append({
+                            'time_range': format_time_range(start_time, end_time),
+                            'washing_recommendation': current_recommendation
+                        })
+                    current_recommendation = washingRecommendation
+                    start_time = time
+
+        daily_recommendations.append({
+            'time_range': format_time_range(start_time, "11:00 PM"),
+            'washing_recommendation': current_recommendation
+        })
+
+        start_time = "12:00 AM"
 
         recommendations.append({
             'date': formatted_date,
@@ -113,12 +127,15 @@ def get_washing_recommendation(combinedScore):
         return "fair conditions for car washing."
     else:
         return "poor conditions for car washing."
-def get_color_class(washingRecommendation):
-    if washingRecommendation == "excellent conditions for car washing.":
-        return "excellent"
-    elif washingRecommendation == "good conditions for car washing.":
-        return "good"
-    elif washingRecommendation == "fair conditions for car washing.":
-        return "fair"
+
+
+def format_time_range(start_time, end_time):
+    start_str = start_time
+    if isinstance(end_time, datetime.datetime):
+        end_str = end_time.strftime("%I:%M %p")
     else:
-        return ""
+        end_str = end_time
+    return f"{start_str} - {end_str}"
+
+
+get_weather("indianapolis")

@@ -41,18 +41,19 @@
     </style>
 </head>
 <body>
-    <h1>Weather Forecast</h1>
-    <div class="forecast-container">
-        {% for day in forecast %}
-            <div class="column">
-                <h2>{{ day.date }}</h2>
-                <ul>
-                    {% for recommendation in day.daily_recommendations %}
-                        <li>{{ recommendation.time }}: {{ recommendation.washing_recommendation }}</li>
-                    {% endfor %}
-                </ul>
-            </div>
-        {% endfor %}
-    </div>
+<h1>Weather Forecast</h1>
+<div class="forecast-container">
+    {% for day in forecast %}
+        <div class="column">
+            <h2>{{ day.date }}</h2>
+            <ul>
+                {% for recommendation in day.daily_recommendations %}
+                    <li>{{ recommendation.time_range }}: {{ recommendation.washing_recommendation }}</li>
+                {% endfor %}
+
+            </ul>
+        </div>
+    {% endfor %}
+</div>
 </body>
 </html>

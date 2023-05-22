@@ -4,15 +4,18 @@ body {
     background-image: url('background.png');
     background-repeat: no-repeat;
     background-size: cover;
+    margin: 0;
 }
 
 .container {
     width: 30vw;
-    margin: 0 auto;
+    margin: 2vh auto 0;
     padding: 20px;
     background-color: #ffffff;
     border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    position: relative;
+    overflow: hidden;
 }
 
 h1 {
@@ -47,10 +50,6 @@ input[type="submit"]:hover {
     background-color: #45a049;
 }
 
-.container {
-    position: relative;
-}
-
 .dropdown {
     position: relative;
     display: inline-block;
@@ -78,4 +77,34 @@ input[type="submit"]:hover {
 
 #results li:hover {
     background-color: #f2f2f2;
+}
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    padding: 10px 0;
+    text-align: center;
+    background-color: black;
+    height: 10vh;
+}
+
+.data-provided {
+    margin: 0;
+    font-weight: bold;
+    font-size: 16px;
+    color: #f2f2f2;
+}
+
+.logos {
+    display: flex;
+    justify-content: center;
+    gap: 100px;
+    align-items: center;
+    height: 100%;
+}
+
+.logos img {
+    height: 50px;
+    margin: 0 5px;
 }
