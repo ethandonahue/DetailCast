@@ -7,15 +7,18 @@
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
+            background-color: #f2f2f2;
         }
 
         h1 {
             text-align: center;
+            color: #333;
         }
 
         h2 {
             margin-top: 30px;
             margin-bottom: 10px;
+            color: #666;
         }
 
         ul {
@@ -25,6 +28,11 @@
 
         li {
             margin-bottom: 5px;
+            cursor: pointer;
+            background-color: #fff;
+            padding: 10px;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
         .column {
@@ -39,22 +47,54 @@
         .forecast-container {
             display: flex;
         }
+
+        .temperature-details {
+            display: none;
+            background-color: #f9f9f9;
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .temperature-details ul {
+            padding-left: 20px;
+        }
+
+        .temperature-details li {
+            margin-bottom: 2px;
+        }
     </style>
 </head>
 <body>
-<h1>Weather Forecast</h1>
+<h1>Detail Cast for {{ location }}</h1>
 <div class="forecast-container">
     {% for day in forecast %}
         <div class="column">
             <h2>{{ day.date }}</h2>
             <ul>
                 {% for recommendation in day.daily_recommendations %}
-                    <li>{{ recommendation.time_range }}: {{ recommendation.washing_recommendation }}</li>
+                    <li onclick="toggleTemperature(this)">
+                        {{ recommendation.time_range }}: {{ recommendation.washing_recommendation }}
+                        <div class="temperature-details">
+                            <ul>
+                                {% for hour in recommendation.hours %}
+                                    <li>{{ hour.time }}: Temp: {{ hour.temp }}°F, Precip: {{ hour.precip }} in, Wind: {{ hour.wind }} mph</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </li>
                 {% endfor %}
-
             </ul>
         </div>
     {% endfor %}
 </div>
+
+<script>
+    function toggleTemperature(element) {
+        var temperatureDetails = element.getElementsByClassName('temperature-details')[0];
+        temperatureDetails.style.display = temperatureDetails.style.display === 'none' ? 'block' : 'none';
+    }
+</script>
 </body>
 </html>

@@ -10,7 +10,9 @@ def get_weather(location):
     forecast_data = response.json()
 
     if 'error' in forecast_data:
-        return 'error'
+        return 'error', 'error'
+
+    location = forecast_data['location']['name']
 
     recommendations = []
     current_recommendation = None
@@ -23,7 +25,7 @@ def get_weather(location):
 
         for hour in forecast['hour']:
             time = datetime.datetime.strptime(hour['time'], "%Y-%m-%d %H:%M")
-            time = time.strftime("%I:%M %p").lstrip("0")  # Remove leading zero using lstrip()
+            time = time.strftime("%I:%M %p").lstrip("0")
             temp = hour['temp_f']
             clouds = hour['cloud']
             wind = hour['wind_mph']
@@ -40,29 +42,38 @@ def get_weather(location):
 
             if washingRecommendation != -1:
                 if washingRecommendation != current_recommendation:
-                    # If the condition has changed end the recommendation block
                     if current_recommendation is not None:
                         end_time = datetime.datetime.strptime(time, "%I:%M %p")
                         daily_recommendations.append({
                             'time_range': format_time_range(start_time, end_time),
-                            'washing_recommendation': current_recommendation
+                            'washing_recommendation': current_recommendation,
+                            'hours': hours  # Add the list of hourly data
                         })
                     current_recommendation = washingRecommendation
                     start_time = time
+                    hours = []  # Initialize the list of hourly data for the new time range
+
+            hours.append({  # Add the hourly data to the list
+                'time': time,
+                'temp': temp,
+                'precip': precip,
+                'wind': wind
+            })
 
         daily_recommendations.append({
             'time_range': format_time_range(start_time, "11:00 PM"),
-            'washing_recommendation': current_recommendation
+            'washing_recommendation': current_recommendation,
+            'hours': hours  # Add the list of hourly data for the last time range
         })
 
         start_time = "12:00 AM"
 
         recommendations.append({
             'date': formatted_date,
-            'daily_recommendations': daily_recommendations
+            'daily_recommendations': daily_recommendations,
         })
 
-    return recommendations
+    return recommendations, location
 
 
 def calculate_temp_score(temp):
@@ -136,6 +147,3 @@ def format_time_range(start_time, end_time):
     else:
         end_str = end_time
     return f"{start_str} - {end_str}"
-
-
-get_weather("indianapolis")

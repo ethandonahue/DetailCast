@@ -112,3 +112,8 @@ input[type="submit"]:hover {
     margin: 0 5px;
 }
 
+.error-message {
+    color: red;
+    font-weight: bold;
+}
+
