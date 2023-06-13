@@ -30,6 +30,7 @@ def get_weather(location):
             clouds = hour['cloud']
             wind = hour['wind_mph']
             precip = hour['precip_mm']
+            precip_in = hour['precip_in']
             uv = hour['uv']
             day = hour['is_day']
 
@@ -56,7 +57,7 @@ def get_weather(location):
             hours.append({  # Add the hourly data to the list
                 'time': time,
                 'temp': temp,
-                'precip': precip,
+                'precip': precip_in,
                 'wind': wind
             })
 
